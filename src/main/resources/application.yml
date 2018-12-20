@@ -1,0 +1,21 @@
+server:
+  port: ${server_port:8080}
+
+spring:
+  application:
+    name: spring-cache-sample
+  profiles:
+    include: h2,standalone-redis
+
+# Enable actuator(Optional)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /actuator
+
+# Set log level
+logging:
+  level:
+    root: INFO

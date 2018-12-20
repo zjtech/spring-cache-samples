@@ -1,0 +1,8 @@
+version: '2'
+services:
+  redis:
+    image: 'redis:latest'
+    ports:
+      - '5800:6379'
+    container_name: redis
+

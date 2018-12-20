@@ -1,0 +1,69 @@
+//apply the dependencies defined in the customized plugin and then the sub projects can access them
+apply from: 'dependencies.gradle'
+
+/**
+ * Apply global settings to all projects
+ */
+buildscript {
+    apply from: 'dependencies.gradle'
+    repositories {
+        maven {
+            //then try to retrieve jars from nexus
+            url nexusPublicUrl
+        }
+        jcenter()
+    }
+
+    dependencies {
+        classpath libs.'spring-boot-gradle-plugin'
+        classpath libs.'dependency-management-plugin'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'project-report'
+apply plugin: "io.spring.dependency-management"
+apply plugin: 'org.springframework.boot'
+
+sourceCompatibility = projectInfo.sourceCompatibility
+targetCompatibility = projectInfo.targetCompatibility
+
+group = projectInfo.group
+version = projectInfo.version
+archivesBaseName = rootProject.name
+
+repositories {
+    maven {
+        //then try to retrieve jars from nexus
+        url nexusPublicUrl
+    }
+    jcenter()
+}
+
+dependencies {
+    //common dependencies
+    compile libs.lombok
+    compile libs.'spring-boot-starter-webflux'
+    compile libs.'spring-boot-starter-aop'
+    compile libs."spring-boot-starter-actuator"
+
+    //for redis cache
+    compile libs."spring-boot-starter-data-redis"
+    compile 'org.apache.commons:commons-pool2:2.6.0'
+
+    //for spring data jpa with h2 database
+    runtime libs.'h2-database'
+    compile 'com.zaxxer:HikariCP'
+    compile libs.'spring-boot-starter-data-jpa'
+
+    //for unit test
+    compile libs.'powermock-module-junit4'
+    compile libs.'powermock-api-mockito2'
+    compile libs.'powermock-module-junit4-rule-agent'
+    testCompile libs.'mockito-inline'
+    testCompile libs.'spring-boot-starter-test'
+    testCompile libs.'spring-boot-starter-test'
+}
